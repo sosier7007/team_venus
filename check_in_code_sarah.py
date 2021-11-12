@@ -20,7 +20,6 @@ class Board:
         self.traps = [(random.randint(0,self.size - 1), 
                        random.randint(0,self.size - 1)) for a in range(10)]
         
-        
     def print_board(self):
         """Prints the board as a grid"""
         for row in self.board:
@@ -45,4 +44,15 @@ class Board:
                 self.board[x][y] is "\u2022"):
                 player.hp = player.hp - random.randint
                 self.board[player.row][player.col] = "X"
+                
+    def change_space(self, row, col, char):
+        """Manually change the character of a space on the board, for testing
+        Args:
+            row(int) - the row of desired coordinate
+            col(int) - the column of desired coordinate
+            char(str) - a symbol to replace the space with
+        Side effects:
+            Changes board attribute of Board
+        """
+        self.board[row][col] == char
 
