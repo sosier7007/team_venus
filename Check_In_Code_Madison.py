@@ -25,9 +25,16 @@ def turn(row, col):
 
     if col <= 0:
         col = 0
+        
+    if col >= 9:
+        col = 9
 
     if row <= 0:
         row = 0
+        
+    if row >= 9:
+        row = 9
+
     return (row, col)
 
 print(turn(1, 2))
