@@ -10,7 +10,7 @@ class Board:
         traps(list of tuples) - a list of random tuples indicating the 
             coordinates of traps on the board
     """
-    def __init__(self, size):
+    def __init__(self, size = 9):
         self.size = size
         self.board = []
         for x in range(self.size):
