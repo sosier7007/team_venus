@@ -102,6 +102,16 @@ class Player:
 class Game:
     """
     """
+    def __init__(self) -> None:
+        pass
+    
+    def game_turn(self, board, player1, player2):
+        pass
+        #print board
+        #players move
+        #check spaces
+        #print board again
+        #print message
     
         
         
@@ -119,3 +129,6 @@ if __name__ == "__main__":
     name2 = input("Player 2, please enter your name: \n")
     print(f"Hello {name2}!/n")
     player2 = Player(name2)
+    
+    #game turn
+    #check if game is over 
