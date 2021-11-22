@@ -1,26 +1,50 @@
+from random import randint
+
 class RunGame:
     '''
-    Class runs the game 
+    Class runs the game sequence
 
     Attributes:
-    player1(): first player
-    player2(): second player
+        p1 (Player) - first player object
+        p2 (Player) - second player object
+        gamestate (Board) - board object that is instantiated with random dimensions
     '''
     def __init__(self, player1, player2):
-        self.gamestate = self.createRandomStartState(player1, player2)
+        """
+        Checks the location of a player on the grid and responds accordingly
+        Args: 
+            p1 (Player) - first player object
+            p2 (Player) - second player object
+        Side effects:
+            Sets self.gamestate to a new Board object with random dimensions
+        """
+        self.p1 = player2
+        self.p2 = player2
+        self.gamestate = self.createRandomStartState(self.p1, self.p2)
+    
+    def createRandomStartState(self, player1, player2):
+        """
+        Create new random board object
+        Args: 
+            p1 (Player) - first player object
+            p2 (Player) - second player object
+        Returns:
+            board (Board) - a new Board object with random dimensions
+        """
+        dim = randint(8, 15)
+        return Board(dim, player1, player2)
 
     
     def runGame(self):
         '''
-        Runs the game
+        Runs the game loop sequence.
 
-        Args:
-        player1(): player1 object
-        player2(): player2 object
+        Side Effects:
+            Runs game, changes the players' positions in the game state, runs until game is over.
         '''
 
         # Starting with player 1
-        currentPlayer = self.player1
+        currentPlayer = self.p1
 
         # Run game til 
         while not self.gameEnded():
@@ -34,25 +58,24 @@ class RunGame:
             
             self.gamestate.displayScores()
 
-            if currentPlayer == self.player1:
-                currentPlayer = self.player2
+            if currentPlayer == self.p1:
+                currentPlayer = self.p2
             else:
-                currentPlayer = self.player1
+                currentPlayer = self.p1
 
     def gameEnded(self):
         '''
         Decides when the game is over
 
-        Side effects:
-            Returns the winning player if health is 10 or if hp is gone or 
-            returns none where the game has not ended
+        Returns:
+            winner (Player, None) - The winning player of the game, None if no winner
         
         '''
-        if self.gameState.player1.score == 10 or self.gameState.player2.score == 10:
-            sc = {self.gameState.player1:self.gameState.player1.score, self.gameState.player2:self.gameState.player2.score}
+        if self.gameState.p1.score == 10 or self.gameState.p2.score == 10:
+            sc = {self.gameState.p1:self.gameState.p1.score, self.gameState.p2:self.gameState.p2.score}
             return max(sc, key = lambda x: sc[x])
         elif self.gameState.player1.health <= 0 or self.gameState.player2.health <= 0:
-            sc = {self.gameState.player1:self.gameState.player1.health, self.gameState.player_2:self.gameState.player2.health}
+            sc = {self.gameState.p1:self.gameState.p1.health, self.gameState.p2:self.gameState.p2.health}
             return max(sc, key = lambda x: sc[x])
         return None
     
