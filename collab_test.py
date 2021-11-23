@@ -16,9 +16,9 @@ class Board:
         for x in range(self.size):
             self.board.append(["\u2022"] * self.size)
         self.treasures = [(random.randint(0,self.size - 1), 
-                           random.randint(0,self.size - 1)) for a in range(10)]
+                           random.randint(0,self.size - 1)) for a in range(20)]
         self.traps = [(random.randint(0,self.size - 1), 
-                       random.randint(0,self.size - 1)) for a in range(10)]
+                       random.randint(0,self.size - 1)) for a in range(20)]
         
     def print_board(self):
         """Prints the board as a grid"""
@@ -33,28 +33,21 @@ class Board:
             Changes player's hp and loot attributes
             Changes board attribute's coordinate characters
         """
-        for x,y in self.treasures:
-            if (x == player.col and y == player.row and 
-                self.board[y][x] is "\u2022"):
+        for x, y in self.treasures:
+            if (x == player.row and y == player.col and 
+                self.board[x][y] == "\u2022"):
                 player.loot = player.loot + random.randint(0, 10)
-                self.board[player.row][player.col] = "O"
+                self.board[x][y] = "O"
+                print("Treasure acquired!")
         
-        for x,y in self.traps:
-            if (x == player.col and y == player.row and 
-                self.board[y][x] is "\u2022"):
+        for x, y in self.traps:     
+            if (x == player.row and y == player.col and 
+                self.board[x][y] == "\u2022"):
                 player.hp = player.hp - random.randint(0, 10)
-                self.board[player.row][player.col] = "X"
-                
-    def change_space(self, row, col, char):
-        """Manually change the character of a space on the board, for testing
-        Args:
-            row(int) - the row of desired coordinate
-            col(int) - the column of desired coordinate
-            char(str) - a symbol to replace the space with
-        Side effects:
-            Changes board attribute of Board
-        """
-        self.board[row][col] == char
+                self.board[x][y] = "X"
+                print("Oh no! Trap found...")
+          
+            
 
 #write a method or function that copies Board.board and changes player location to player icon + prints
 
@@ -89,20 +82,20 @@ class Player:
         if self.col <= 0:
             self.col = 0
         
-        if self.col >= 9:
-            col = 9
+        if self.col >= 8:
+            col = 8
 
         if self.row <= 0:
             self.row = 0
         
-        if self.row >= 9:
-            self.row = 9
+        if self.row >= 8:
+            self.row = 8
 
 
 class Game:
     """
     """
-    def __init__(self) -> None:
+    def __init__(self, board, player1, player2):
         pass
     
     def game_turn(self, board, player1, player2):
@@ -118,17 +111,35 @@ class Game:
 if __name__ == "__main__":
     # run game here
     game_board = Board()
-    game_board.print_board
+    game_board.print_board()
     
-    #print game instructions for players
+    #print game instructions 
     
     name1 = input("Player 1, please enter your name: \n")
-    print(f"Hello {name1}!/n")
+    print(f"Hello {name1}!")
     player1 = Player(name1)
     
     name2 = input("Player 2, please enter your name: \n")
-    print(f"Hello {name2}!/n")
+    print(f"Hello {name2}!")
     player2 = Player(name2)
+    
+    #print player location on board
+    #print loot and hp
     
     #game turn
     #check if game is over 
+    #repeat
+    
+    player1.move_player()
+    print(f"{player1.player_name} moved to space {player1.row}, {player1.col}")
+    game_board.check_space(player1)
+    game_board.print_board()
+    
+    player1.move_player()
+    print(f"{player1.player_name} moved to space {player1.row}, {player1.col}")
+    game_board.check_space(player1)
+    game_board.print_board()
+    print(player1.loot)
+    print(player1.hp)
+    print(game_board.treasures)
+    print(game_board.traps)
