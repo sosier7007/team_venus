@@ -100,18 +100,63 @@ class Player:
 
 
 class Game:
-    """
-    """
-    def __init__(self) -> None:
-        pass
+    '''
+    Class runs the game 
+
+    Attributes:
+    player1(): first player
+    player2(): second player
     
-    def game_turn(self, board, player1, player2):
-        pass
-        #print board
-        #players move
-        #check spaces
-        #print board again
-        #print message
+    '''
+    def __init__(self, player1, player2):
+        self.gamestate = self.createRandomStartState(player1, player2)
+
+    
+    def runGame(self):
+        '''
+        Runs the game
+
+        Args:
+        player1(): player1 object
+        player2(): player2 object
+        '''
+
+        # Starting with player 1
+        currentPlayer = self.player1
+
+        # Run game til 
+        while not self.gameEnded():
+            
+            playerActions = self.gamestate.move_player(currentPlayer)
+            action = input(f"Choose an move: {playerActions}")
+            while not action in playerActions:
+                action = input(f"Choose an move: {[a for a in playerActions]}")
+        
+            self.gamestate.move_player(currentPlayer, action)
+            
+            print(player1.loot, player1.hp)
+
+            if currentPlayer == self.player1:
+                currentPlayer = self.player2
+            else:
+                currentPlayer = self.player1
+
+    def gameEnded(self):
+        '''
+        Decides when the game is over
+
+        Side effects:
+            Returns the winning player if health is 10 or if hp is gone or 
+            returns none where the game has not ended
+        
+        '''
+        if (self.gameState.player_1_score + self.gameState.player_1_score == 10):
+            sc = {self.gameState.player_1:self.gameState.player_1_score, self.gameState.player_2:self.gameState.player_2_score}
+            return max(sc, key = lambda x: sc[x])
+        elif self.gameState.player_1_health <= 0 or self.gameState.player_1_health <= 0:
+            sc = {self.gameState.player_1:self.gameState.player_1_health, self.gameState.player_2:self.gameState.player_2_health}
+            return max(sc, key = lambda x: sc[x])
+        return None
     
         
         
