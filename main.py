@@ -123,6 +123,8 @@ class Game:
         self.gamestate = self.createRandomStartState(player1, player2)
     
     def createRandomStartState(self, player1, player2):
+        # Return a new board with two new player objects created from the player name parameters
+        # Board's size is set randomly between 9 and 15
         return Board(Player(player1), Player(player2), size=random.randint(9, 15))
 
     
@@ -135,31 +137,40 @@ class Game:
         player2(): player2 object
         '''
 
-        # Starting with player 1
+        # Start with player 1 - set currentPlayer to player 1's name
         currentPlayer = self.gamestate.p1.player_name
 
-        # Run game til 
+        # Run game until the game has ended
         while not self.gameEnded():
-            
 
+            # TODO: print which player's turn it is
+            # TODO: print the current player's hp and loot
+
+            
+            # Roll the dice, get a random number from 1-6
             roll = random.randint(1, 6)
             print(f"You rolled a {roll}.")
 
+            # List of player actions
             playerActions = ["left", "right", "up", "down"]
 
+            # Ask user for a move
             action = input(f"Choose an move: {playerActions}")
+            # Keep asking for a move until they input a valid one
             while not action in playerActions:
                 print("Invalid move.")
                 action = input(f"Choose an move: {[a for a in playerActions]}")
         
-
+            # Move the current player in the chosen direction, for the number of steps rolled on the dice
             self.gamestate.move_player(currentPlayer, action, roll)
+
+            # Check the current player's space, update their hp and loot
             self.gamestate.check_space(currentPlayer)
+
+            # Display the board
             self.gamestate.print_board()
 
-
-            
-
+            # Switch current player to the opposite player for the next turn
             if currentPlayer == self.gamestate.p1.player_name:
                 currentPlayer = self.gamestate.p2.player_name
             else:
@@ -174,17 +185,24 @@ class Game:
             returns none where the game has not ended
         
         '''
+        # Check if either player has reached 10 loot
         if (self.gamestate.p1.loot == 10 or self.gamestate.p2.loot == 10):
+            # Dictionary mapping player's name to their loot count
             sc = {
                 self.gamestate.p1.player_name:self.gamestate.p1.loot, 
                 self.gamestate.p2.player_name:self.gamestate.p2.loot, 
             }
+            # Return the player with the higher loot
             return max(sc, key = lambda x: sc[x])
+
+        # Check if either player has zero or less hp
         elif self.gamestate.p1.hp <= 0 or self.gamestate.p2.hp <= 0:
+            # Dictionary mapping player's name to their hp count
             sc = {
                 self.gamestate.p1.player_name:self.gamestate.p1.hp, 
                 self.gamestate.p2.player_name:self.gamestate.p2.hp, 
             }
+            # Return the player with the higher hp
             return max(sc, key = lambda x: sc[x])
         return None
     
