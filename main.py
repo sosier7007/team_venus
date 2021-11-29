@@ -56,6 +56,8 @@ class Board:
                 player.hp = player.hp - random.randint(0, 10)
                 self.board[x][y] = "X"
                 print("Oh no! Trap found...")
+            else:
+                self.board[x][y] = "e"
     
     def move_player(self, player_name, action, steps):
         if player_name == self.p1.player_name:
