@@ -56,8 +56,7 @@ class Board:
                 player.hp = player.hp - random.randint(0, 10)
                 self.board[x][y] = "X"
                 print("Oh no! Trap found...")
-            else:
-                self.board[x][y] = "e"
+    
     
     def move_player(self, player_name, action, steps):
         if player_name == self.p1.player_name:
@@ -87,13 +86,13 @@ class Player:
         """
         """
         if turn_direction == "left":
-            self.col -= steps
-        elif turn_direction == "right":
-            self.col += steps
-        elif turn_direction == "up":
-            self.row += steps
-        elif turn_direction == "down":
             self.row -= steps
+        elif turn_direction == "right":
+            self.row += steps
+        elif turn_direction == "up":
+            self.col += steps
+        elif turn_direction == "down":
+            self.col -= steps
 
         if self.col <= 0:
             self.col = 0
