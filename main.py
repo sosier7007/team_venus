@@ -94,7 +94,7 @@ class Player:
         """
         """
         if turn_direction == "left":
-            self.col -= steps
+            self.row -= steps
         elif turn_direction == "right":
             self.col += steps
         elif turn_direction == "down":
