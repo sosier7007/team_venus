@@ -27,8 +27,21 @@ class Board:
         """Prints the board as a grid"""
         for row in self.board:
             print(" ".join(row))
+            
+    def print_player(self):
+    #write a method or function that copies Board.board and 
+    # changes player location to player icon + prints
+        player_board = self.board.copy()
+        row1 = self.p1.row
+        col1 = self.p1.col
+        row2 = self.p2.row
+        col2 = self.p2.col
+        player_board[row1][col1] = "\u263A"
+        player_board[row2][col2] = "\u263A"
+        for row in player_board:
+            print(" ".join(row))
     
-    def check_space(self, player_name): # make this into a function instead of a method
+    def check_space(self, player_name): 
         """Checks the location of a player on the grid and responds accordingly
         Args: 
             player(Player obj) - a Player
@@ -64,10 +77,8 @@ class Board:
             self.p1.move_player(action, steps)
         else:
             self.p2.move_player(action, steps)
-          
-            
 
-#write a method or function that copies Board.board and changes player location to player icon + prints
+
 
 class Player:
     """
@@ -80,8 +91,6 @@ class Player:
         self.col = 0
         
     def move_player(self, turn_direction, steps): 
-        #change turn_direction to user input(rather than random)
-        #print dice roll and instructions for player to see
         """
         """
         if turn_direction == "left":
@@ -168,7 +177,11 @@ class Game:
             self.gamestate.check_space(currentPlayer)
 
             # Display the board
+            
+            self.gamestate.print_player()
+            print('')
             self.gamestate.print_board()
+
             print(f"{self.gamestate.p1.player_name} has {self.gamestate.p1.loot} loot \n and {self.gamestate.p1.hp} health.")
             print(f"{self.gamestate.p2.player_name} has {self.gamestate.p2.loot} loot \n and {self.gamestate.p2.hp} health.")
 
@@ -226,25 +239,4 @@ if __name__ == "__main__":
     g = Game(name1, name2)
     g.runGame()
     
-    # #print player location on board
-    # #print loot and hp
-    
-    # #game turn
-    # #check if game is over 
-    # #repeat
-    
-    # # player1.move_player()
-    # # print(f"{player1.player_name} moved to space {player1.row}, {player1.col}")
-    # # game_board.check_space(player1)
-    # # game_board.print_board()
-    
-    # # player1.move_player()
-    # # print(f"{player1.player_name} moved to space {player1.row}, {player1.col}")
-    # # game_board.check_space(player1)
-    # # game_board.print_board()
-    # # print(player1.loot)
-    # # print(player1.hp)
-    # # print(game_board.treasures)
-    # # print(game_board.traps)
-
     
