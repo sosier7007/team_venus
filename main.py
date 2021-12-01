@@ -46,7 +46,7 @@ class Board:
         for x, y in self.treasures:
             if (x == player.row and y == player.col and 
                 self.board[x][y] == "\u2022"):
-                player.loot = player.loot + random.randint(0, 10)
+                player.loot = player.loot + 1
                 self.board[x][y] = "O"
                 print("Treasure acquired!")
         
@@ -57,7 +57,7 @@ class Board:
                 self.board[x][y] = "X"
                 print("Oh no! Trap found...")
             else:
-                self.board[x][y] = "e"
+                self.board[player.row][player.col] = "e"
     
     def move_player(self, player_name, action, steps):
         if player_name == self.p1.player_name:
@@ -78,8 +78,6 @@ class Player:
         self.hp = 10
         self.row = 0
         self.col = 0
-    
-        
         
     def move_player(self, turn_direction, steps): 
         #change turn_direction to user input(rather than random)
@@ -90,24 +88,24 @@ class Player:
             self.col -= steps
         elif turn_direction == "right":
             self.col += steps
-        elif turn_direction == "up":
-            self.row += steps
         elif turn_direction == "down":
+            self.row += steps
+        elif turn_direction == "up":
             self.row -= steps
 
-        if self.col <= 0:
+        if self.col < 0:
             self.col = 0
             print("Bumped into a wall, stopping here.")
         
-        if self.col >= 8:
+        if self.col > 8:
             self.col = 8
             print("Bumped into a wall, stopping here.")
 
-        if self.row <= 0:
+        if self.row < 0:
             self.row = 0
             print("Bumped into a wall, stopping here.")
         
-        if self.row >= 8:
+        if self.row > 8:
             self.row = 8
             print("Bumped into a wall, stopping here.")
 
@@ -127,7 +125,7 @@ class Game:
     def createRandomStartState(self, player1, player2):
         # Return a new board with two new player objects created from the player name parameters
         # Board's size is set randomly between 9 and 15
-        return Board(Player(player1), Player(player2), size=random.randint(9, 15))
+        return Board(Player(player1), Player(player2), size= 9)
 
     
     def runGame(self):
@@ -151,17 +149,17 @@ class Game:
             
             # Roll the dice, get a random number from 1-6
             roll = random.randint(1, 6)
-            print(f"You rolled a {roll}.")
+            print(f"{currentPlayer} rolled a {roll}.")
 
             # List of player actions
             playerActions = ["left", "right", "up", "down"]
 
             # Ask user for a move
-            action = input(f"Choose an move: {playerActions}")
+            action = input(f"Choose a move: {playerActions}")
             # Keep asking for a move until they input a valid one
             while not action in playerActions:
                 print("Invalid move.")
-                action = input(f"Choose an move: {[a for a in playerActions]}")
+                action = input(f"Choose a move: {[a for a in playerActions]}")
         
             # Move the current player in the chosen direction, for the number of steps rolled on the dice
             self.gamestate.move_player(currentPlayer, action, roll)
@@ -171,6 +169,8 @@ class Game:
 
             # Display the board
             self.gamestate.print_board()
+            print(f"{self.gamestate.p1.player_name} has {self.gamestate.p1.loot} loot \n and {self.gamestate.p1.hp} health.")
+            print(f"{self.gamestate.p2.player_name} has {self.gamestate.p2.loot} loot \n and {self.gamestate.p2.hp} health.")
 
             # Switch current player to the opposite player for the next turn
             if currentPlayer == self.gamestate.p1.player_name:
@@ -188,7 +188,7 @@ class Game:
         
         '''
         # Check if either player has reached 10 loot
-        if (self.gamestate.p1.loot == 10 or self.gamestate.p2.loot == 10):
+        if (self.gamestate.p1.loot >= 10 or self.gamestate.p2.loot >= 10):
             # Dictionary mapping player's name to their loot count
             sc = {
                 self.gamestate.p1.player_name:self.gamestate.p1.loot, 
