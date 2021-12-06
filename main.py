@@ -25,6 +25,13 @@ class Board:
         
     def print_board(self):
         """Prints the board as a grid"""
+        player_board = self.board.copy()
+        row1 = self.p1.row
+        col1 = self.p1.col
+        row2 = self.p2.row
+        col2 = self.p2.col
+        player_board[row1][col1] = "\u263A"
+        player_board[row2][col2] = "\u263A"
         for row in self.board:
             print(" ".join(row))
             
@@ -40,6 +47,18 @@ class Board:
         player_board[row2][col2] = "\u263A"
         for row in player_board:
             print(" ".join(row))
+    
+    def delete_p(self, player_name):
+        new_board = self.board.copy()
+        if player_name == self.p1.player_name:
+            player = self.p1
+        else:
+            player = self.p2
+        row1 = player.row
+        col1 = player.col
+        new_board[row1][col1] = "\u2022"
+        for row in new_board:
+            " ".join(row)
     
     def check_space(self, player_name): 
         """Checks the location of a player on the grid and responds accordingly
@@ -94,7 +113,7 @@ class Player:
         """
         """
         if turn_direction == "left":
-            self.row -= steps
+            self.col -= steps
         elif turn_direction == "right":
             self.col += steps
         elif turn_direction == "down":
@@ -169,7 +188,9 @@ class Game:
             while not action in playerActions:
                 print("Invalid move.")
                 action = input(f"Choose a move: {[a for a in playerActions]}")
-        
+            
+            self.gamestate.delete_p(currentPlayer)
+                    
             # Move the current player in the chosen direction, for the number of steps rolled on the dice
             self.gamestate.move_player(currentPlayer, action, roll)
 
@@ -177,8 +198,6 @@ class Game:
             self.gamestate.check_space(currentPlayer)
 
             # Display the board
-            
-            self.gamestate.print_player()
             print('')
             self.gamestate.print_board()
 
