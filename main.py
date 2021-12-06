@@ -31,12 +31,12 @@ class Board:
     def print_player(self):
     #write a method or function that copies Board.board and 
     # changes player location to player icon + prints
-        player_board = self.board.copy()
+        player_board = [r[:] for r in self.board] # NOTE: Changed to list comprehension since .copy is shallow
         row1 = self.p1.row
         col1 = self.p1.col
         row2 = self.p2.row
         col2 = self.p2.col
-        player_board[row1][col1] = "\u263A"
+        player_board[row1][col1] = "\u263A" # TODO: Change to unique characters
         player_board[row2][col2] = "\u263A"
         for row in player_board:
             print(" ".join(row))
@@ -74,9 +74,10 @@ class Board:
     
     def move_player(self, player_name, action, steps):
         if player_name == self.p1.player_name:
-            self.p1.move_player(action, steps)
+            # curRow, curCol = p1.ro
+            self.p1.move_player(action, steps, self.size)
         else:
-            self.p2.move_player(action, steps)
+            self.p2.move_player(action, steps, self.size)
 
 
 
@@ -90,11 +91,13 @@ class Player:
         self.row = 0
         self.col = 0
         
-    def move_player(self, turn_direction, steps): 
+    def move_player(self, turn_direction, steps, size): 
         """
         """
+        # NOTE: added size parameter to check for the size of the board
+        
         if turn_direction == "left":
-            self.row -= steps
+            self.col -= steps
         elif turn_direction == "right":
             self.col += steps
         elif turn_direction == "down":
@@ -106,16 +109,16 @@ class Player:
             self.col = 0
             print("Bumped into a wall, stopping here.")
         
-        if self.col > 8:
-            self.col = 8
+        if self.col >= size:
+            self.col = size
             print("Bumped into a wall, stopping here.")
 
         if self.row < 0:
             self.row = 0
             print("Bumped into a wall, stopping here.")
         
-        if self.row > 8:
-            self.row = 8
+        if self.row >= size:
+            self.row = size
             print("Bumped into a wall, stopping here.")
 
 
@@ -155,6 +158,13 @@ class Game:
             # TODO: print which player's turn it is
             # TODO: print the current player's hp and loot
 
+            # Display the board
+            
+            print("")
+            self.gamestate.print_player()
+            # print('')
+            # self.gamestate.print_board()
+
             
             # Roll the dice, get a random number from 1-6
             roll = random.randint(1, 6)
@@ -175,12 +185,6 @@ class Game:
 
             # Check the current player's space, update their hp and loot
             self.gamestate.check_space(currentPlayer)
-
-            # Display the board
-            
-            self.gamestate.print_player()
-            print('')
-            self.gamestate.print_board()
 
             print(f"{self.gamestate.p1.player_name} has {self.gamestate.p1.loot} loot \n and {self.gamestate.p1.hp} health.")
             print(f"{self.gamestate.p2.player_name} has {self.gamestate.p2.loot} loot \n and {self.gamestate.p2.hp} health.")
