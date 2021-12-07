@@ -101,7 +101,15 @@ class Board:
 
 
 class Player:
-    """
+    """Creates one of the players for the game
+    
+    Attributes:
+    - player_name (str) - the name of the player
+    - loot (int) - how much treasure the player has
+    - hp (int) - how many health points the player has
+    - row (int) - the latitudal position of the player
+    - col (int) - the longitudal position of the player
+    
     """
     def __init__(self, input):
         self.player_name = input 
@@ -111,7 +119,16 @@ class Player:
         self.col = 0
         
     def move_player(self, turn_direction, steps, size): 
-        """
+        """Allows the player to move around the board
+        
+        Args:
+        - turn_direction (str) - the direction that the player wants to move
+        - steps (int) - the amount of spaces a player will move
+        - size (int) - the dimensions of the board
+        
+        Side effects:
+        - Changes the values of 'row' and 'col' for the player, which changes
+            their position on the board
         """
         # NOTE: added size parameter to check for the size of the board
         
