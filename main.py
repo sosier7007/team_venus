@@ -31,7 +31,7 @@ class Board:
         row2 = self.p2.row
         col2 = self.p2.col
         player_board[row1][col1] = "\u263A"
-        player_board[row2][col2] = "\u263A"
+        player_board[row2][col2] = "\u263B"
         for row in self.board:
             print(" ".join(row))
             
@@ -44,7 +44,7 @@ class Board:
         row2 = self.p2.row
         col2 = self.p2.col
         player_board[row1][col1] = "\u263A" # TODO: Change to unique characters
-        player_board[row2][col2] = "\u263A"
+        player_board[row2][col2] = "\u263B"
         for row in player_board:
             print(" ".join(row))
     
@@ -129,7 +129,7 @@ class Player:
             print("Bumped into a wall, stopping here.")
         
         if self.col >= size:
-            self.col = size
+            self.col = size - 1
             print("Bumped into a wall, stopping here.")
 
         if self.row < 0:
@@ -137,7 +137,7 @@ class Player:
             print("Bumped into a wall, stopping here.")
         
         if self.row >= size:
-            self.row = size
+            self.row = size - 1
             print("Bumped into a wall, stopping here.")
 
 
@@ -211,8 +211,8 @@ class Game:
             print('')
             self.gamestate.print_board()
 
-            print(f"{self.gamestate.p1.player_name} has {self.gamestate.p1.loot} loot \n and {self.gamestate.p1.hp} health.")
-            print(f"{self.gamestate.p2.player_name} has {self.gamestate.p2.loot} loot \n and {self.gamestate.p2.hp} health.")
+            print(f"{self.gamestate.p1.player_name} has {self.gamestate.p1.loot} loot and {self.gamestate.p1.hp} health.")
+            print(f"{self.gamestate.p2.player_name} has {self.gamestate.p2.loot} loot and {self.gamestate.p2.hp} health.")
 
             # Switch current player to the opposite player for the next turn
             if currentPlayer == self.gamestate.p1.player_name:
@@ -253,11 +253,10 @@ class Game:
         
         
 if __name__ == "__main__":
-    # # run game here
-    # game_board = Board()
-    # game_board.print_board()
     
-    # #print game instructions 
+    #print game instructions 
+    print("Player 1 = \u263A")
+    print("Player 2 = \u263B")
     
     name1 = input("Player 1, please enter your name: \n")
     print(f"Hello {name1}!")
