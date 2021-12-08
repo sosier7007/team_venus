@@ -148,14 +148,24 @@ class Game:
     Attributes:
     player1(): first player
     player2(): second player
-    """
+    """ 
     
     def __init__(self, player1, player2):
+                """Set attributes."""
         self.gamestate = self.createRandomStartState(player1, player2)
     
     def createRandomStartState(self, player1, player2):
+        """Creates a random board object
+            
+            Args:
+                player1 : first player
+                player2 : second player
+            
+            Returns:
+                a new board with two new player objects created from the player na,e parameters
+            """
         # Return a new board with two new player objects created from the player name parameters
-        # Board's size is set randomly between 9 and 15
+        # Board's size is set to 9
         return Board(Player(player1), Player(player2), size= 9)
 
     
@@ -163,9 +173,9 @@ class Game:
         '''
         Runs the game
 
-        Args:
-        player1(): player1 object
-        player2(): player2 object
+        Side effects: 
+            changes the game state
+        
         '''
 
         # Start with player 1 - set currentPlayer to player 1's name
@@ -221,6 +231,7 @@ class Game:
                 currentPlayer = self.gamestate.p1.player_name
 
     def gameEnded(self):
+        
         '''
         Decides when the game is over
 
