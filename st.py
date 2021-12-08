@@ -24,20 +24,6 @@ class Board:
         self.p2 = player2
         
     def print_board(self):
-        """Prints the board as a grid"""
-        player_board = self.board.copy()
-        row1 = self.p1.row
-        col1 = self.p1.col
-        row2 = self.p2.row
-        col2 = self.p2.col
-        player_board[row1][col1] = "\u263A"
-        player_board[row2][col2] = "\u263B"
-        for row in self.board:
-            print(" ".join(row))
-            
-    def print_player(self):
-    #write a method or function that copies Board.board and 
-    # changes player location to player icon + prints
         player_board = [r[:] for r in self.board] # NOTE: Changed to list comprehension since .copy is shallow
         row1 = self.p1.row
         col1 = self.p1.col
@@ -49,16 +35,21 @@ class Board:
             print(" ".join(row))
     
     def delete_p(self, player_name):
-        new_board = self.board.copy()
         if player_name == self.p1.player_name:
             player = self.p1
         else:
             player = self.p2
-        row1 = player.row
-        col1 = player.col
-        new_board[row1][col1] = "\u2022"
-        for row in new_board:
-            " ".join(row)
+        
+        for x, y in self.treasures:
+            if (x == player.row and y == player.col):
+                self.board[x][y] = "\u25C7"
+                break
+            else:
+                self.board[player.row][player.col] = "\u25E6"
+        
+        for x, y in self.traps:
+            if ((x == player.row and y == player.col) and (self.board[x][y] == "\u25E6")) :
+                self.board[x][y] = "x"
     
     def check_space(self, player_name): 
         """Checks the location of a player on the grid and responds accordingly
@@ -73,23 +64,23 @@ class Board:
             player = self.p1
         else:
             player = self.p2
-
+            
+        modifier = random.randint(1, 5)
 
         for x, y in self.treasures:
             if (x == player.row and y == player.col and 
                 self.board[x][y] == "\u2022"):
-                player.loot = player.loot + 1
+                player.loot = player.loot + modifier
                 self.board[x][y] = "O"
-                print("Treasure acquired!")
+                print(f"\n{player.player_name} found {modifier} pieces of treasure!")
         
         for x, y in self.traps:     
             if (x == player.row and y == player.col and 
                 self.board[x][y] == "\u2022"):
-                player.hp = player.hp - random.randint(0, 10)
+                player.hp = player.hp - modifier
                 self.board[x][y] = "X"
-                print("Oh no! Trap found...")
-            else:
-                self.board[player.row][player.col] = "e"
+                print(f"\nOh no! Trap found by {player.player_name}...they take {modifier} damage...")            
+    
     
     def move_player(self, player_name, action, steps):
         if player_name == self.p1.player_name:
@@ -101,15 +92,7 @@ class Board:
 
 
 class Player:
-    """Creates one of the players for the game
-    
-    Attributes:
-    - player_name (str) - the name of the player
-    - loot (int) - how much treasure the player has
-    - hp (int) - how many health points the player has
-    - row (int) - the latitudal position of the player
-    - col (int) - the longitudal position of the player
-    
+    """
     """
     def __init__(self, input):
         self.player_name = input 
@@ -119,16 +102,7 @@ class Player:
         self.col = 0
         
     def move_player(self, turn_direction, steps, size): 
-        """Allows the player to move around the board
-        
-        Args:
-        - turn_direction (str) - the direction that the player wants to move
-        - steps (int) - the amount of spaces a player will move
-        - size (int) - the dimensions of the board
-        
-        Side effects:
-        - Changes the values of 'row' and 'col' for the player, which changes
-            their position on the board
+        """
         """
         # NOTE: added size parameter to check for the size of the board
         
@@ -143,19 +117,16 @@ class Player:
 
         if self.col < 0:
             self.col = 0
-            print("Bumped into a wall, stopping here.")
         
         if self.col >= size:
-            self.col = size - 1
-            print("Bumped into a wall, stopping here.")
+            self.col = size - 1 
 
         if self.row < 0:
             self.row = 0
-            print("Bumped into a wall, stopping here.")
         
         if self.row >= size:
             self.row = size - 1
-            print("Bumped into a wall, stopping here.")
+
 
 
 class Game:
@@ -165,24 +136,14 @@ class Game:
     Attributes:
     player1(): first player
     player2(): second player
-    """ 
+    """
     
     def __init__(self, player1, player2):
-                """Set attributes."""
         self.gamestate = self.createRandomStartState(player1, player2)
     
     def createRandomStartState(self, player1, player2):
-        """Creates a random board object
-            
-            Args:
-                player1 : first player
-                player2 : second player
-            
-            Returns:
-                a new board with two new player objects created from the player na,e parameters
-            """
         # Return a new board with two new player objects created from the player name parameters
-        # Board's size is set to 9
+        # Board's size is set randomly between 9 and 15
         return Board(Player(player1), Player(player2), size= 9)
 
     
@@ -190,9 +151,9 @@ class Game:
         '''
         Runs the game
 
-        Side effects: 
-            changes the game state
-        
+        Args:
+        player1(): player1 object
+        player2(): player2 object
         '''
 
         # Start with player 1 - set currentPlayer to player 1's name
@@ -207,10 +168,6 @@ class Game:
             # Display the board
             
             print("")
-            self.gamestate.print_player()
-            # print('')
-            # self.gamestate.print_board()
-
             
             # Roll the dice, get a random number from 1-6
             roll = random.randint(1, 6)
@@ -238,17 +195,16 @@ class Game:
             print('')
             self.gamestate.print_board()
 
-            print(f"{self.gamestate.p1.player_name} has {self.gamestate.p1.loot} loot and {self.gamestate.p1.hp} health.")
-            print(f"{self.gamestate.p2.player_name} has {self.gamestate.p2.loot} loot and {self.gamestate.p2.hp} health.")
-
             # Switch current player to the opposite player for the next turn
             if currentPlayer == self.gamestate.p1.player_name:
                 currentPlayer = self.gamestate.p2.player_name
             else:
                 currentPlayer = self.gamestate.p1.player_name
+                print('')
+                print(f"{self.gamestate.p1.player_name} has {self.gamestate.p1.loot} loot and {self.gamestate.p1.hp} health.")
+                print(f"{self.gamestate.p2.player_name} has {self.gamestate.p2.loot} loot and {self.gamestate.p2.hp} health.")
 
     def gameEnded(self):
-        
         '''
         Decides when the game is over
 
@@ -293,6 +249,11 @@ if __name__ == "__main__":
     print(f"Hello {name2}!")
 
     g = Game(name1, name2)
+    print('')
+    g.gamestate.print_board()
     g.runGame()
+    
+    winner = g.gameEnded()
+    print(f"\n Congratulations {winner} you win the game!")
     
     
