@@ -1,5 +1,6 @@
 # team_venus
 INST 326 Collaborative Coding - Final Project
+
 In this project, a two player game was created. In this game, two players compete in order to find treasure and avoid traps. There are two ways that the game can end:
 1. One of the players collects 10 pieces of treasure.
 2. One of the players loses all of their health points.
@@ -15,8 +16,24 @@ After this, player 1 will be given a random number from 1-6 that represents how 
 There are three potential outcomes when landing on a space.
 1. You find some treasure, in which case your loot will increase. This is indicated by the statement 'Treasure Acquired!', which will be listed above the board. After you leave the space, it will be represented by a diamond.
 2. You find a trap, which will cause your HP to decrease. This is indicated by the statement 'Oh no! Trap found...', which will be listed above the board. After you leave the space, it will be represented by an X.
-3. You find an empty space, in which nothing will happen. After you leave the space, it will be represented by a black dot.
+3. You find an empty space, in which nothing will happen. After you leave the space, it will be represented by a white dot.
 
 The same steps listed above will then occur for player 2. The only difference is that their position will be indicated by a white smiley face.
 
 The game will alternate between both players until one of the game endings listed above occurs. After this, the game will print a statement saying who won, and the program will end.
+
+Attribution:
+As a whole, all members of our team contributed and collaborated on the majority of our code, but the primary author of each method is as written below:
+
+class Board
+  print_board - Sarah
+  delete_p - Madison
+  check_space - Sarah
+  move_player - Merline
+class Player
+  move_player - Madison
+class Game
+  createRandomStartState - Merline
+  runGame - Merline
+  gameEnded - Merline
+if __name__ == "__main__" - Sarah
