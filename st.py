@@ -99,6 +99,17 @@ class Board:
     
     
     def move_player(self, player_name, action, steps):
+        """Determines which player should move
+        
+        Args:
+        - player_name (str) - the name of the player
+        - action (str) - the direction that the player will move in
+        - steps (int) - how many spaces the player will move
+        
+        Side effects:
+        - Changes the location of the player on the board
+        
+        """
         if player_name == self.p1.player_name:
             # curRow, curCol = p1.ro
             self.p1.move_player(action, steps, self.size)
@@ -175,6 +186,16 @@ class Game:
         self.gamestate = self.createRandomStartState(player1, player2)
     
     def createRandomStartState(self, player1, player2):
+        """Creates a starting state for the board
+        
+        Args:
+        - player1 (str) - the name of player 1
+        - player2 (str) - the name of player 2
+        
+        Returns:
+        - an instance of the Board class
+        
+        """
         # Return a new board with two new player objects created from the player name parameters
         # Board's size is set randomly between 9 and 15
         return Board(Player(player1), Player(player2), size= 9)
