@@ -24,6 +24,13 @@ class Board:
         self.p2 = player2
         
     def print_board(self):
+        """Prints the board for the game
+       
+        Side effects:
+        - prints the board that the game is taking place on, along
+            with the positions of each player on the board
+        
+        """
         player_board = [r[:] for r in self.board] # NOTE: Changed to list comprehension since .copy is shallow
         row1 = self.p1.row
         col1 = self.p1.col
@@ -35,6 +42,15 @@ class Board:
             print(" ".join(row))
     
     def delete_p(self, player_name):
+        """Prevents the player icons from appearing multiple times
+        
+        Args:
+        - player_name (str) - the name of the player
+        
+        Side effects:
+        - Removes a player's icon from their previous location
+        
+        """
         if player_name == self.p1.player_name:
             player = self.p1
         else:
@@ -92,7 +108,15 @@ class Board:
 
 
 class Player:
-    """
+    """Creates one of the players for the game
+    
+    Attributes:
+    - player_name (str) - the name of the player
+    - loot (int) - how much treasure the player has
+    - hp (int) - how many health points a player has
+    - row (int) - the latitudal position of the player
+    - col (int) - the longitudal position of the player
+    
     """
     def __init__(self, input):
         self.player_name = input 
@@ -102,7 +126,16 @@ class Player:
         self.col = 0
         
     def move_player(self, turn_direction, steps, size): 
-        """
+        """ Moves the player to a different space on the board
+        
+        Args:
+        - turn_direction (str) - the direction that the player wants to go in
+        - steps (int) - how many spaces the player will move
+        - size (int) - the dimensions of the board
+        
+        Side effects:
+        - Changes the value of 'rol' and 'col' for the player
+        
         """
         # NOTE: added size parameter to check for the size of the board
         
