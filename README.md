@@ -1,12 +1,19 @@
 # team_venus
 INST 326 Collaborative Coding - Final Project
 
+Files in repository:
+  island_treasure_game.py - all code for our project is contained in this script
+  Code from check-in (ignore):
+    check_in_code_madison.py
+    check_in_code_merline.py
+    check_in_code_sarah.py
+
 In this project, a two player game was created. In this game, two players compete in order to find treasure and avoid traps. There are two ways that the game can end:
 1. One of the players collects 10 pieces of treasure.
 2. One of the players loses all of their health points.
 
 How To Run The Program
-In order to run the program, simply type the needed Python command for your system (i.e. 'python3' or 'python'), followed by a space and then 'st.py'. This will begin the game.
+In order to run the program, simply type the needed Python command for your system (i.e. 'python3' or 'python'), followed by a space and then 'island_treasure_game.py'. This will begin the game.
 
 How To Use The Program:
 First, both players will be asked for their names. When prompted, simply type your desired name into the terminal and press either 'Enter' or 'Return' (depending on your computer). You will repeat this step for the second player.
