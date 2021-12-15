@@ -25,31 +25,26 @@ class Board:
         
     def print_board(self):
         """Prints the board for the game
-       
         Side effects:
-        - prints the board that the game is taking place on, along
+            prints the board that the game is taking place on, along
             with the positions of each player on the board
-        
         """
-        player_board = [r[:] for r in self.board] # NOTE: Changed to list comprehension since .copy is shallow
+        player_board = [r[:] for r in self.board]
         row1 = self.p1.row
         col1 = self.p1.col
         row2 = self.p2.row
         col2 = self.p2.col
-        player_board[row1][col1] = "\u263A" # TODO: Change to unique characters
+        player_board[row1][col1] = "\u263A" 
         player_board[row2][col2] = "\u263B"
         for row in player_board:
             print(" ".join(row))
     
     def delete_p(self, player_name):
         """Prevents the player icons from appearing multiple times
-        
         Args:
-        - player_name (str) - the name of the player
-        
+            player_name(str) - the name of the player
         Side effects:
-        - Removes a player's icon from their previous location
-        
+            Removes a player's icon from their previous location
         """
         if player_name == self.p1.player_name:
             player = self.p1
@@ -64,7 +59,8 @@ class Board:
                 self.board[player.row][player.col] = "\u25E6"
         
         for x, y in self.traps:
-            if ((x == player.row and y == player.col) and (self.board[x][y] == "\u25E6")) :
+            if ((x == player.row and y == player.col) and 
+                self.board[x][y] == "\u25E6") :
                 self.board[x][y] = "x"
     
     def check_space(self, player_name): 
@@ -88,46 +84,39 @@ class Board:
                 self.board[x][y] == "\u2022"):
                 player.loot = player.loot + modifier
                 self.board[x][y] = "O"
-                print(f"\n{player.player_name} found {modifier} pieces of treasure!")
+                print(f"\n{player.player_name} found {modifier} treasure!")
         
         for x, y in self.traps:     
             if (x == player.row and y == player.col and 
                 self.board[x][y] == "\u2022"):
                 player.hp = player.hp - modifier
                 self.board[x][y] = "X"
-                print(f"\nOh no! Trap found by {player.player_name}...they take {modifier} damage...")            
-    
+                print(f"\nOh no! Trap found by {player.player_name}"
+                      f"...they take {modifier} damage...")            
     
     def move_player(self, player_name, action, steps):
         """Determines which player should move
-        
         Args:
-        - player_name (str) - the name of the player
-        - action (str) - the direction that the player will move in
-        - steps (int) - how many spaces the player will move
-        
+            player_name(str) - the name of the player
+            action(str) - the direction that the player will move in
+            steps(int) - how many spaces the player will move
         Side effects:
-        - Changes the location of the player on the board
-        
+            Changes the location of the player on the board
         """
         if player_name == self.p1.player_name:
-            # curRow, curCol = p1.ro
             self.p1.move_player(action, steps, self.size)
         else:
             self.p2.move_player(action, steps, self.size)
 
 
-
 class Player:
     """Creates one of the players for the game
-    
     Attributes:
-    - player_name (str) - the name of the player
-    - loot (int) - how much treasure the player has
-    - hp (int) - how many health points a player has
-    - row (int) - the latitudal position of the player
-    - col (int) - the longitudal position of the player
-    
+        player_name(str) - the name of the player
+        loot(int) - how much treasure the player has
+        hp(int) - how many health points a player has
+        row(int) - the latitudal position of the player
+        col(int) - the longitudal position of the player
     """
     def __init__(self, input):
         self.player_name = input 
@@ -138,17 +127,13 @@ class Player:
         
     def move_player(self, turn_direction, steps, size): 
         """ Moves the player to a different space on the board
-        
         Args:
-        - turn_direction (str) - the direction that the player wants to go in
-        - steps (int) - how many spaces the player will move
-        - size (int) - the dimensions of the board
-        
+            turn_direction (str) - the direction that the player wants to go in
+            steps (int) - how many spaces the player will move
+            size (int) - the dimensions of the board
         Side effects:
-        - Changes the value of 'rol' and 'col' for the player
-        
+            Changes the value of 'rol' and 'col' for the player
         """
-        # NOTE: added size parameter to check for the size of the board
         
         if turn_direction == "left":
             self.col -= steps
@@ -170,7 +155,6 @@ class Player:
         
         if self.row >= size:
             self.row = size - 1
-
 
 
 class Game:
@@ -196,11 +180,10 @@ class Game:
         - an instance of the Board class
         
         """
-        # Return a new board with two new player objects created from the player name parameters
-        # Board's size is set randomly between 9 and 15
+        # Return a new board with two new player objects created 
+        # from the player name parameters
         return Board(Player(player1), Player(player2), size= 9)
 
-    
     def runGame(self):
         '''
         Runs the game
@@ -215,11 +198,6 @@ class Game:
 
         # Run game until the game has ended
         while not self.gameEnded():
-
-            # TODO: print which player's turn it is
-            # TODO: print the current player's hp and loot
-
-            # Display the board
             
             print("")
             
@@ -239,7 +217,8 @@ class Game:
             
             self.gamestate.delete_p(currentPlayer)
                     
-            # Move the current player in the chosen direction, for the number of steps rolled on the dice
+            # Move the current player in the chosen direction
+            # for the number of steps rolled on the dice
             self.gamestate.move_player(currentPlayer, action, roll)
 
             # Check the current player's space, update their hp and loot
@@ -255,8 +234,12 @@ class Game:
             else:
                 currentPlayer = self.gamestate.p1.player_name
                 print('')
-                print(f"{self.gamestate.p1.player_name} has {self.gamestate.p1.loot} loot and {self.gamestate.p1.hp} health.")
-                print(f"{self.gamestate.p2.player_name} has {self.gamestate.p2.loot} loot and {self.gamestate.p2.hp} health.")
+                print(f"{self.gamestate.p1.player_name} has "
+                      f"{self.gamestate.p1.loot} loot and "
+                      f"{self.gamestate.p1.hp} health.")
+                print(f"{self.gamestate.p2.player_name} has "
+                      f"{self.gamestate.p2.loot} loot and "
+                      f"{self.gamestate.p2.hp} health.")
 
     def gameEnded(self):
         '''
@@ -289,16 +272,16 @@ class Game:
         return None
     
         
-        
 if __name__ == "__main__":
     
-    #print game instructions 
+    print('')
     print("Player 1 = \u263A")
     print("Player 2 = \u263B")
+    print('')
     
     name1 = input("Player 1, please enter your name: \n")
     print(f"Hello {name1}!")
-    
+    print('')
     name2 = input("Player 2, please enter your name: \n")
     print(f"Hello {name2}!")
 
@@ -309,5 +292,6 @@ if __name__ == "__main__":
     
     winner = g.gameEnded()
     print(f"\n Congratulations {winner} you win the game!")
+    print('')
     
     
